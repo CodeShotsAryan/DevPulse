@@ -119,7 +119,7 @@ export async function POST(req: NextRequest) {
 
 
     } catch (error) {
-       console.error('Error Deleting  post:', error);
+       console.error('Error Deleting post:', error);
        return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
     }
 }
