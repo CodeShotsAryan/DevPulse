@@ -4,12 +4,7 @@ export interface User extends Document {
     email: string;
     username: string;
     password: string;
-    profilePicture?: string;
-    firstName?: string;
-    lastName?: string;
-    age?: number;
-    bio?: string;
-    createdAt?: Date;
+   
 }
 
 const userSchema: Schema<User> = new Schema({
@@ -28,19 +23,8 @@ const userSchema: Schema<User> = new Schema({
     password: {
         type: String,
         required: [true, "Password is required"],
-    },
-    profilePicture: String,
-    firstName: String,
-    lastName: String,
-    bio: String,
-    age: {
-        type: Number,
-        min: [14, "Minimum age of 14 is required"],
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
+    }
+   
 }, { timestamps: true });
 
 const User = mongoose.models.User as mongoose.Model<User> || mongoose.model<User>('User', userSchema);
