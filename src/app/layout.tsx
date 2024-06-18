@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
+import Header from "@/components/Header/Header";
+import HomePage from "@/containers/home-page/homePage";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,12 +14,25 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Header/>
+          <HomePage/>
+          <main className="mx-5 mt-16 sm:ml-[300px] sm:mt-3">
+          {children}
+          </main>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
