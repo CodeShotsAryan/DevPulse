@@ -1,3 +1,4 @@
+"use client"
 import {useMediaQuery} from 'usehooks-ts'
 import SideBarDesktop from './SideBarDesktop'
 import SideBarMobile from './SideBarMobile'
@@ -13,6 +14,7 @@ import {
     User,
     Users,
   } from 'lucide-react';
+import { SidebarButton } from './SideBarButton';
 
 const sidebarItems: SidebarItems = {
     links: [
@@ -42,15 +44,15 @@ const sidebarItems: SidebarItems = {
     ],
     extras: (
       <div className='flex flex-col gap-2'>
-        {/* <SidebarButton icon={MoreHorizontal} className='w-full'>
+        <SidebarButton icon={MoreHorizontal} className='w-full'>
           More
         </SidebarButton>
         <SidebarButton
-          className='w-full justify-center text-white'
+          className='w-full justify-center text-black'
           variant='default'
         >
           Tweet
-        </SidebarButton> */}
+        </SidebarButton>
       </div>
     ),
   };
@@ -60,7 +62,7 @@ export default function SideBar (){
         initializeWithValue : false ,
     })
     if(isDesktop)
-        return <SideBarDesktop />
+        return <SideBarDesktop sidebarItems={sidebarItems} />
 
     return (
         <SideBarMobile sidebarItems={sidebarItems}/>
