@@ -35,6 +35,7 @@ export async function POST(req: NextRequest , res : NextResponse) {
             password: hashedPassword
            
         });
+        
 
         return NextResponse.json({
             success: true,

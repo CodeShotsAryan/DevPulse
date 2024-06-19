@@ -13,8 +13,15 @@ import {
   NavigationMenuContent,
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import SideBar from "../SideBar/SideBar";
 
 const Header: React.FC = () => {
+  const [isSideBarOpen , setIsSideBarOpen] = useState(false);
+  const toggleSideBar =()=>{
+    setIsSideBarOpen(!isSideBarOpen)
+  }
   return (
     <nav className="navbar bg-black text-white px-4 py-2 flex justify-between items-center sticky top-0 z-50">
       <div className="flex items-center space-x-4">
@@ -23,6 +30,14 @@ const Header: React.FC = () => {
           <a className="text-xl font-bold">DevPulse</a>
         </Link>
       </div>
+      <Button size="icon" variant="ghost" onClick={toggleSideBar} className="sm:hidden">
+        {isSideBarOpen ? <X size={20} /> : <Menu size={20} />}
+      </Button>
+      {isSideBarOpen && (
+        <div className="fixed inset-0 z-40 sm:hidden">
+          <SideBar />
+        </div>
+      )}
       {/* Search Bar */}
       <div className="flex-1 mx-4">
         <Input
@@ -35,7 +50,6 @@ const Header: React.FC = () => {
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Menu</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <NavigationMenuLink asChild>
                   <Link href="/about" legacyBehavior>
