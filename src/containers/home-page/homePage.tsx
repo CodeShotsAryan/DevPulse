@@ -41,8 +41,8 @@ export default function HomePage() {
           </div>
         )}
         <div className={`flex-1 p-4 ${isDesktop ? '' : 'w-full'}`}>
-          <CreatePostForm onSubmit={handleCreatePost}/>
-          <PostList posts={posts} />
+          {/* <CreatePostForm onSubmit={handleCreatePost}/>
+          <PostList posts={posts} /> */}
           <BentoGridThirdDemo />
         </div>
       </div>
