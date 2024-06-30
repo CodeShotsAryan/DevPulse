@@ -1,7 +1,7 @@
 import connectDB from "@/lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
-import Post from "@/models/Post";
-import User from "@/models/User";
+import Post from "../../../../prisma/models/Post";
+import User from "@/schema/User";
 
 const getQueryParams = (url: string) => {
     const params = new URL(url).searchParams;

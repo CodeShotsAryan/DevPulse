@@ -1,24 +1,28 @@
-import connectDB from "@/lib/dbConnect";
-import User from "@/models/User";
-import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import connectDB from "@/lib/dbConnect";
+import bcrypt from 'bcryptjs';
+import prisma from '../../../../../prisma';
 
-export async function POST(req: NextRequest , res : NextResponse) {
+export async function POST(req: NextRequest) {
     await connectDB();
 
     try {
         const { username, email, password } = await req.json();
 
-        if (!username || !email || !password  === undefined) {
+        if (!username || !email || password === undefined) {
             return NextResponse.json({
                 success: false,
                 message: 'All fields are required',
             }, { status: 400 });
         }
 
-        const existingUserByEmail = await User.findOne({ email });
-        const existingUserByUsername = await User.findOne({ username });
+        const existingUserByEmail = await prisma.user.findUnique({
+            where: { email },
+        });
+        const existingUserByUsername = await prisma.user.findFirst({
+            where: { username },
+        });
 
         if (existingUserByEmail || existingUserByUsername) {
             return NextResponse.json({
@@ -29,13 +33,13 @@ export async function POST(req: NextRequest , res : NextResponse) {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = await User.create({
-            email,
-            username,
-            password: hashedPassword
-           
+        const newUser = await prisma.user.create({
+            data: {
+                email,
+                username,
+                password: hashedPassword,
+            },
         });
-        
 
         return NextResponse.json({
             success: true,
@@ -45,7 +49,7 @@ export async function POST(req: NextRequest , res : NextResponse) {
     } catch (error) {
         console.error("Error creating user:", error);
         let errorMessage = "Error creating user";
-        
+
         if (error instanceof Error) {
             errorMessage = error.message;
         } else if (typeof error === 'string') {
@@ -53,10 +57,12 @@ export async function POST(req: NextRequest , res : NextResponse) {
         } else if (typeof error === 'object' && error !== null) {
             errorMessage = JSON.stringify(error);
         }
-        
+
         return NextResponse.json({
             success: false,
             error: errorMessage,
         }, { status: 500 });
+    } finally {
+        await prisma.$disconnect();
     }
 }

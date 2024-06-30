@@ -1,0 +1,27 @@
+model Profile {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String    @unique @db.ObjectId
+  user         User      @relation(fields: [userId], references: [id])
+  firstName    String?
+  lastName     String?
+  username     String    @unique
+  bio          String?
+  profilePicture String?
+  email        String    @unique
+  website      String?
+  location     String?
+  socialLinks  Json?
+  jobTitle     String?
+  company      String?
+  skills       String[]
+  experience   String?
+  posts        Int       @default(0)
+  comments     Int       @default(0)
+  followers    Int       @default(0)
+  following    Int       @default(0)
+  dateOfBirth  DateTime?
+  gender       String?
+  interests    String[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}

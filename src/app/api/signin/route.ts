@@ -1,5 +1,4 @@
 import connectDB from "@/lib/dbConnect";
-import User from "@/models/User";
 import bcrypt from 'bcryptjs';
 import { NextResponse, NextRequest } from "next/server";
 
@@ -11,7 +10,7 @@ export async function POST(req: NextRequest) {
 
         // Find user by username or email
         const user = await User.findOne({ $or: [{ username }, { email }] });
-
+        
         if (!user) {
             return NextResponse.json({
                 success: false,

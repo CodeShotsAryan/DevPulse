@@ -1,7 +1,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/dbConnect';
-import Profile from '@/models/Profile';
+import Profile from '../../../../prisma/models/Profile';
 
 
 const getQueryParams = (url: string) => {

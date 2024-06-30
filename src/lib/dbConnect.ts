@@ -1,32 +1,13 @@
-import mongoose from 'mongoose';
-
-const MONGODB_URI = process.env.MONGODB_URI ;
-const connectDB = async()=> {
-
-    const connectionState = mongoose.connection.readyState;
+import { PrismaClient } from "@prisma/client";
+import prisma from "../../prisma";
 
 
-    if (connectionState === 1) {
-        console.log("Already connected to database");
-        return;
-    }
-
-    if (connectionState === 2) {
-        console.log(" connectingg.. to database");
-        return;
-    }
-
+export default async function dbConnect(){
+    
     try {
-        mongoose.connect(MONGODB_URI! , {
-            dbName: "DevPulse" ,
-        });
-        console.log("DB connected successfully");
+            await prisma.$connect();
     } catch (error) {
-        console.error("Database connection failed:", error);
-        throw new Error("Error Connecting to Database ")
-        process.exit(1); 
-
+        console.log(error);
+        throw new Error("Unable to Connect Database ")
     }
 }
-
-export default connectDB;

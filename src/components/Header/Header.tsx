@@ -16,6 +16,7 @@ import {
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import SideBar from "../SideBar/SideBar";
+import LoginButton from "../ui/login-button";
 
 const Header: React.FC = () => {
   const [isSideBarOpen , setIsSideBarOpen] = useState(false);
@@ -70,9 +71,7 @@ const Header: React.FC = () => {
         {/* Login Button */}
         <Link href="/login" legacyBehavior>
           <a>
-            <Button variant="outline" className="text-white">
-              Login
-            </Button>
+          <LoginButton/>
           </a>
         </Link>
         {/* Create Account Button */}
