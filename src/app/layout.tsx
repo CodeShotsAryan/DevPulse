@@ -6,6 +6,7 @@ import Header from "@/components/Header/Header";
 import HomePage from "@/containers/home-page/homePage";
 import clsx from "clsx";
 import Providers from "@/components/Providers";
+import SideBar from "@/components/SideBar/SideBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,7 +31,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
           >
-          <HomePage/>
+            <Header/>
+            <SideBar/>
           <main className="mx-5 mt-16 sm:ml-[300px] sm:mt-3">
           {children}
           </main>

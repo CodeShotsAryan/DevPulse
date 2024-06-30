@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import Navbar from "@/components/Header/Header";
 import SideBar from "@/components/SideBar/SideBar";
 import { BentoGridThirdDemo } from "@/components/bento-grid";
 import { useMediaQuery } from 'usehooks-ts';
@@ -33,7 +32,6 @@ export default function HomePage() {
   }
   return (
     <div className="flex flex-col h-full">
-      <Navbar />
       <div className="flex flex-1">
         {isDesktop && (
           <div className="w-[270px]">
@@ -42,8 +40,8 @@ export default function HomePage() {
         )}
         <div className={`flex-1 p-4 ${isDesktop ? '' : 'w-full'}`}>
           {/* <CreatePostForm onSubmit={handleCreatePost}/>
-          <PostList posts={posts} /> */}
-          <BentoGridThirdDemo />
+          <PostList posts={posts} />
+          <BentoGridThirdDemo /> */}
         </div>
       </div>
     </div>

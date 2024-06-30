@@ -1,8 +1,9 @@
-
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import prisma from '../../../../../prisma';
 import dbConnect from '@/lib/dbConnect';
+import { Session } from 'inspector';
+import SignToken from '@/lib/SignInToke';
 
 const authOptions = {
   providers: [
@@ -20,11 +21,21 @@ const authOptions = {
     // Add other providers as needed (e.g., GitHub, LinkedIn)
   ],
   secret: process.env.NEXTAUTH_SECRET,
+ 
   callbacks: {
-    async session({ session }:any) {
+    async jwt({token,user,account}:any)
+    {
+      if (account) {         
+        const userLoggedIn = await SignToken(user?.email as string);
+        token.loggedUser = userLoggedIn;
+      }
+      return token;
+    } ,
+    async session({ session ,token , user}: any) {
+      session.loggedUser = token.loggedUser;
       return session;
     },
-    async signIn({ profile }:any) {
+    async signIn({user, account , profile }: any) {
       try {
         await dbConnect();
     
@@ -42,7 +53,7 @@ const authOptions = {
           let usernameSuffix = 1;
     
           while (usernameExists) {
-            const existingUserByUsername = await prisma.user.findUnique({
+            const existingUserByUsername = await prisma.user.findFirst({
               where: { username },
             });
     
@@ -60,8 +71,8 @@ const authOptions = {
             data: {
               email: profile.email,
               username,
-              oauthProvider: profile.provider,
-              oauthId: profile.id,
+              oauthProvider: 'google',
+              oauthId: profile.sub,
             },
           });
     
@@ -78,9 +89,9 @@ const authOptions = {
         await prisma.$disconnect();
       }
     }
-  },
+  } 
 };
 
 const handler = NextAuth(authOptions);
 
-export  {handler as GET , handler as POST};
+export { handler as GET, handler as POST };

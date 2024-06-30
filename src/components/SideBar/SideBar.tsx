@@ -27,9 +27,9 @@ const sidebarItems: SidebarItems = {
         label: 'Lists',
       },
       {
-        href: '/item/bookmarks',
+        href: '/About',
         icon: Bookmark,
-        label: 'Bookmarks',
+        label: 'About',
       },
       {
         href: '/item/communities',
