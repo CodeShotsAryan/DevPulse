@@ -17,12 +17,16 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import SideBar from "../SideBar/SideBar";
 import LoginButton from "../ui/login-button";
+import { useSession } from "next-auth/react";
 
 const Header: React.FC = () => {
   const [isSideBarOpen , setIsSideBarOpen] = useState(false);
+  const {data:session,status} = useSession()
+
   const toggleSideBar =()=>{
     setIsSideBarOpen(!isSideBarOpen)
   }
+
   return (
     <nav className="navbar bg-black text-white px-4 py-2 flex justify-between items-center sticky top-0 z-50">
       <div className="flex items-center space-x-4">
@@ -69,17 +73,32 @@ const Header: React.FC = () => {
         {/* Mode Toggle */}
         <ModeToggle />
         {/* Login Button */}
-        <Link href="/login" legacyBehavior>
+        {
+          status ==='authenticated' ?(
+            <>
+              <Link href="/create-post">
+                <Button>Create Post</Button>
+              </Link>
+            </>
+          ):(
+            <>
+             <Link href="/login" legacyBehavior>
           <a>
           <LoginButton/>
           </a>
         </Link>
-        {/* Create Account Button */}
-        <Link href="/signup" legacyBehavior>
+          {/* Create Account Button */}
+
+          <Link href="/signup" legacyBehavior>
           <a>
             <Button className="bg-blue-600 text-white">Create Account</Button>
           </a>
         </Link>
+            </>
+          )
+        }
+       
+      
       </div>
     </nav>
   );

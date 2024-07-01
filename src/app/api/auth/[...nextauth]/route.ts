@@ -2,8 +2,7 @@ import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import prisma from '../../../../../prisma';
 import dbConnect from '@/lib/dbConnect';
-import { Session } from 'inspector';
-import SignToken from '@/lib/SignInToke';
+import SignToken from '@/lib/SignInToken';
 
 const authOptions = {
   providers: [
@@ -18,45 +17,43 @@ const authOptions = {
         },
       },
     }),
-    // Add other providers as needed (e.g., GitHub, LinkedIn)
   ],
   secret: process.env.NEXTAUTH_SECRET,
- 
+
   callbacks: {
-    async jwt({token,user,account}:any)
-    {
-      if (account) {         
+    async jwt({ token, user, account }: any) {
+      if (account) {
         const userLoggedIn = await SignToken(user?.email as string);
         token.loggedUser = userLoggedIn;
       }
       return token;
-    } ,
-    async session({ session ,token , user}: any) {
+    },
+    async session({ session, token }: any) {
       session.loggedUser = token.loggedUser;
       return session;
     },
-    async signIn({user, account , profile }: any) {
+    async signIn({ user, profile }: any) {
       try {
         await dbConnect();
-    
+
         const existingUserByEmail = await prisma.user.findUnique({
           where: { email: profile.email },
         });
-    
+
         if (!existingUserByEmail) {
           // Generate a default username
-          const defaultUsername = profile.given_name.toLowerCase() + profile.family_name.toLowerCase();
-    
+          const defaultUsername = (profile.given_name + profile.family_name).toLowerCase();
+
           // Check if the default username is already taken
           let username = defaultUsername;
           let usernameExists = true;
           let usernameSuffix = 1;
-    
+
           while (usernameExists) {
             const existingUserByUsername = await prisma.user.findFirst({
               where: { username },
             });
-    
+
             if (!existingUserByUsername) {
               usernameExists = false;
             } else {
@@ -65,7 +62,7 @@ const authOptions = {
               usernameSuffix++;
             }
           }
-    
+
           // Create the new user with the unique username
           const newUser = await prisma.user.create({
             data: {
@@ -75,12 +72,10 @@ const authOptions = {
               oauthId: profile.sub,
             },
           });
-    
+
           console.log('User created:', newUser);
-    
-          return true; // Return true if sign-in is successful
         }
-    
+
         return true; // Return true if sign-in is successful
       } catch (error) {
         console.error('Error creating user:', error);
@@ -89,7 +84,7 @@ const authOptions = {
         await prisma.$disconnect();
       }
     }
-  } 
+  }
 };
 
 const handler = NextAuth(authOptions);
