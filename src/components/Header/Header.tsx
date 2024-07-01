@@ -72,7 +72,7 @@ const Header: React.FC = () => {
         {/* Login and Create Post Buttons */}
         {status === "authenticated" ? (
           <>
-            <Link href="/create-post">
+            <Link href="/new">
               <Button>Create Post</Button>
             </Link>
             <Button onClick={() => signOut()} className="bg-blue-600 text-white">
