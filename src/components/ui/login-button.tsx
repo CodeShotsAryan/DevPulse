@@ -1,28 +1,22 @@
+import { Button } from '@/components/ui/button';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
-import {Button} from '@/components/ui/button'
-import { signIn , signOut, useSession } from 'next-auth/react'
+const LoginButton: React.FC = () => {
+  const { data: session } = useSession();
 
-export default function LoginButton(){
-    const {data : session} = useSession();
-    
-    const handleSignOut = async () => {
-        await signOut();
-    };
+  if (session && session.user) {
+    return (
+      <Button className="bg-blue-600 text-white" onClick={() => signOut()}>
+        Sign Out
+      </Button>
+    );
+  }
 
+  return (
+    <Button className="bg-blue-600 text-white" onClick={() => signIn()}>
+      Sign In with Google Account
+    </Button>
+  );
+};
 
-    if(session && session.user){
-    return(
-        <div>
-            <Button className="bg-blue-600 text-white" onClick={handleSignOut}>Sign Out</Button>
-        </div>
-        )
-     }
-     
-     return(
-        <div>
-             <Button className="bg-blue-600 text-white" onClick={()=>signIn()}>
-                SignIn with Google Account</Button>
-        </div>
-     )
-
-}
+export default LoginButton;

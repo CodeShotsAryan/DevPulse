@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,23 +9,20 @@ import {
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,
-  NavigationMenuTrigger,
   NavigationMenuContent,
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
-import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import SideBar from "../SideBar/SideBar";
-import LoginButton from "../ui/login-button";
-import { useSession } from "next-auth/react";
+import { useSession, signOut, signIn } from "next-auth/react";
 
 const Header: React.FC = () => {
-  const [isSideBarOpen , setIsSideBarOpen] = useState(false);
-  const {data:session,status} = useSession()
+  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const { data: session, status } = useSession();
 
-  const toggleSideBar =()=>{
-    setIsSideBarOpen(!isSideBarOpen)
-  }
+  const toggleSideBar = () => {
+    setIsSideBarOpen(!isSideBarOpen);
+  };
 
   return (
     <nav className="navbar bg-black text-white px-4 py-2 flex justify-between items-center sticky top-0 z-50">
@@ -72,33 +69,28 @@ const Header: React.FC = () => {
         </NavigationMenu>
         {/* Mode Toggle */}
         <ModeToggle />
-        {/* Login Button */}
-        {
-          status ==='authenticated' ?(
-            <>
-              <Link href="/create-post">
-                <Button>Create Post</Button>
-              </Link>
-            </>
-          ):(
-            <>
-             <Link href="/login" legacyBehavior>
-          <a>
-          <LoginButton/>
-          </a>
-        </Link>
-          {/* Create Account Button */}
-
-          <Link href="/signup" legacyBehavior>
-          <a>
-            <Button className="bg-blue-600 text-white">Create Account</Button>
-          </a>
-        </Link>
-            </>
-          )
-        }
-       
-      
+        {/* Login and Create Post Buttons */}
+        {status === "authenticated" ? (
+          <>
+            <Link href="/create-post">
+              <Button>Create Post</Button>
+            </Link>
+            <Button onClick={() => signOut()} className="bg-blue-600 text-white">
+              Sign Out
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button className="bg-blue-600 text-white" onClick={() => signIn('google')}>
+              Sign In with Google
+            </Button>
+            <Link href="/signup" legacyBehavior>
+              <a>
+                <Button className="bg-blue-600 text-white">Create Account</Button>
+              </a>
+            </Link>
+          </>
+        )}
       </div>
     </nav>
   );
