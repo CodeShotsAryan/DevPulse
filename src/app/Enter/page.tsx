@@ -1,7 +1,8 @@
+"use client"
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 
-export default async function Page() {
+export default  function Page() {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-2xl mb-6">Join The DevPulse Community</h1>
@@ -13,7 +14,7 @@ export default async function Page() {
         Login with Google
       </button>
       <Link href="/create-account">
-        <a className="text-blue-500">Create Account</a>
+        Create Account
       </Link>
     </div>
   );

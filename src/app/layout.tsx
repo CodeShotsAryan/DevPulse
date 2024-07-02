@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/Header/Header";
-import HomePage from "@/containers/home-page/homePage";
+import HomePage from "@/app/home-page/homePage";
 import clsx from "clsx";
 import Providers from "@/components/Providers";
 import SideBar from "@/components/SideBar/SideBar";
