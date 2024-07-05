@@ -7,9 +7,10 @@ export default function Home() {
   const { data: session, status } = useSession();
 
   return (
-   <div>
+   <div className=""> 
      {
-                status==="authenticated"?(
+                status==="authenticated" ? 
+                (
                     <>
                     <h1>
                         hello ,  welcome to Devpulse

@@ -35,7 +35,6 @@ export default function HomePage() {
       <div className="flex flex-1">
         {isDesktop && (
           <div className="w-[270px]">
-            <SideBar />
           </div>
         )}
         <div className={`flex-1 p-4 ${isDesktop ? '' : 'w-full'}`}>

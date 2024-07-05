@@ -48,7 +48,7 @@ const sidebarItems: SidebarItems = {
           More
         </SidebarButton>
         <SidebarButton
-          className='w-full justify-center text-black'
+          className='w-full justify-center text-white'
           variant='default'
         >
           Tweet
